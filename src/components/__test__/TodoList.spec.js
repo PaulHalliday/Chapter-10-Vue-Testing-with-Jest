@@ -1,6 +1,7 @@
 import { mount } from 'vue-test-utils';
 import TodoList from '../TodoList';
 import TodoItem from '../TodoItem';
+import TodoInput from '../TodoInput';
 
 describe('TodoList.vue', () => {
   it('should contain a list of Todo items', () => {
@@ -41,5 +42,32 @@ describe('TodoList.vue', () => {
     const todos = wrapper.vm.todos;
 
     expect(todos.length).toBe(1);
+  }) 
+
+  it('should call addTodo when form is submitted', () => {
+    const wrapper = mount(TodoList);
+    const spy = jest.spyOn(wrapper.vm, 'addTodo');
+    wrapper.find('form').trigger('submit', 'Clean the car');
+
+    expect(wrapper.vm.addTodo).toHaveBeenCalled();
+  }); 
+
+  it('should call addTodo the addTodo event happens', () => {
+    const wrapper = mount(TodoList);
+    
+    wrapper.vm.addTodo = jest.fn();
+    wrapper.find(TodoInput).vm.$emit('addTodo', 'Clean the car');
+
+    expect(wrapper.vm.addTodo).toBeCalledWith('Clean the car');
   })
+
+  it('adds an item to the todolist when the addTodo event happens', () => {
+    const wrapper = mount(TodoList);
+    
+    wrapper.find(TodoInput).vm.$emit('addTodo', 'Clean the car');
+
+    const todos = wrapper.vm.todos;
+
+    expect(todos.length).toBe(1);
+  });
 });

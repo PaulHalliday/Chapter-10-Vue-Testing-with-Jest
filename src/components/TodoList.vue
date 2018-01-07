@@ -1,10 +1,8 @@
 <template>
   <div>
     <h1>TodoList</h1>
-    <form @submit.prevent="addTodo(todoName)">
-      <input type="text" v-model="todoName">
-      <button type="submit">Submit</button>
-    </form>
+
+    <TodoInput @addTodo="addTodo($event)"></TodoInput>
 
     <ul>
       <TodoItem v-for="todo in todos" v-bind:key="todo.id" :todo="todo">{{todo.name}}</TodoItem>
@@ -13,12 +11,15 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem';
 import uuid from 'uuid/v4';
+
+import TodoItem from './TodoItem';
+import TodoInput from './TodoInput';
 
 export default {
   components: {
     TodoItem,
+    TodoInput
   },
   data() {
     return {
